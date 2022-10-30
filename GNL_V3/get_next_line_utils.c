@@ -1,9 +1,8 @@
 #include "get_next_line.h"
-#include "leak_detector_c.h"
 
-int	ft_strlen(const char *str)
+size_t  ft_strlen(const char *str)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
     if (str)
@@ -13,6 +12,22 @@ int	ft_strlen(const char *str)
         return (i);
     }
     return (0);
+}
+
+size_t	ft_strlcpy(char *dest, const char *src, size_t size)
+{
+	size_t	index;
+
+	if (!size)
+		return (ft_strlen(src));
+	index = 0;
+	while (src[index] && index < (size - 1))
+	{
+		dest[index] = src[index];
+		index++;
+	}
+	dest[index] = '\0';
+	return (ft_strlen(src));
 }
 
 int     line_len(char *stash)
@@ -58,7 +73,20 @@ char    *my_strcat(char *str1, char *str2)
     return (new);
 }
 
-char    *extract_line(char *stash)
+char	*ft_strdup(const char *src)
+{
+	char	*string;
+	size_t	src_size;
+
+	src_size = ft_strlen(src);
+	string = malloc(sizeof(char) * (src_size + 1));
+	if (string == NULL)
+		return (NULL);
+	ft_strlcpy(string, src, src_size + 1);
+	return (string);
+}
+
+/*char    *extract_line(char *stash)
 {
     int i;
     char *line;
@@ -73,18 +101,24 @@ char    *extract_line(char *stash)
         i++;
     }
     return (line);
-}
+}*/
 
 char    *make_stash(t_gnl *head)
 {
     char *stash;
-    int i;
+    char *tmp;
+    //int i;
 
-    i = 0;
+    //i = 0;
     stash = NULL;
+    tmp = NULL;
     while (head != NULL)
     {
-        stash = my_strcat(stash, head->content);
+        tmp = my_strcat(stash, head->content);
+        if (stash != NULL)
+            free(stash);
+        stash = ft_strdup(tmp);
+        free(tmp);
         head = head->next;
     }
     return (stash);
@@ -96,7 +130,6 @@ int main()
     //char *test = extract_line(str);
     char *test2;
 
-    atexit(report_mem_leak);
 
     t_gnl *node1 = (t_gnl *)malloc(sizeof(t_gnl));
     t_gnl *node2 = (t_gnl *)malloc(sizeof(t_gnl));
@@ -111,4 +144,8 @@ int main()
     test2 = make_stash(node1);
 
     printf("%s\n", test2);
+    free(test2);
+    free(node1);
+    free(node2);
+    free(node3);
 }
