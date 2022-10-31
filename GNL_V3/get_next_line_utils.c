@@ -86,7 +86,7 @@ char	*ft_strdup(const char *src)
 	return (string);
 }
 
-/*char    *extract_line(char *stash)
+char    *extract_line(char *stash)
 {
     int i;
     char *line;
@@ -101,7 +101,7 @@ char	*ft_strdup(const char *src)
         i++;
     }
     return (line);
-}*/
+}
 
 char    *make_stash(t_gnl *head)
 {
@@ -124,14 +124,34 @@ char    *make_stash(t_gnl *head)
     return (stash);
 }
 
+char    *ft_broomstick(char *stash)
+{
+    int i;
+    int stash_len;
+    int count;
+    char *new_stash;
+
+    i =0;
+    count++;
+    stash_len = ft_strlen(stash);
+    while (stash[--stash_len] != '\n')
+        count++;
+    new_stash = (char *)malloc(sizeof(char) * count);
+    while (stash[++stash_len])
+        new_stash[i++] = stash[stash_len];
+    return (new_stash);
+}
+
 int main()
 {
-    //char str[] = "hELhLO\nall.";
+    char str[] = "hELhLO\nall.";
     //char *test = extract_line(str);
     char *test2;
 
+    test2 = ft_broomstick(str);
+    printf("%s\n", test2);
 
-    t_gnl *node1 = (t_gnl *)malloc(sizeof(t_gnl));
+    /*t_gnl *node1 = (t_gnl *)malloc(sizeof(t_gnl));
     t_gnl *node2 = (t_gnl *)malloc(sizeof(t_gnl));
     t_gnl *node3 = (t_gnl *)malloc(sizeof(t_gnl));
     node1->content = "Hello";
@@ -147,5 +167,6 @@ int main()
     free(test2);
     free(node1);
     free(node2);
-    free(node3);
+    free(node3);*/
+
 }
