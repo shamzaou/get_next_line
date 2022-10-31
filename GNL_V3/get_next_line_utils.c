@@ -1,5 +1,6 @@
 #include "get_next_line.h"
 
+/* Calucaltes the Length of a string */
 size_t  ft_strlen(const char *str)
 {
 	unsigned int	i;
@@ -14,6 +15,7 @@ size_t  ft_strlen(const char *str)
     return (0);
 }
 
+/* Copies a string */
 size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 {
 	size_t	index;
@@ -30,6 +32,7 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 	return (ft_strlen(src));
 }
 
+/* Calculate the length of the line that should be returned (aka. len until '\n') */
 int     line_len(char *stash)
 {
     int i;
@@ -44,6 +47,7 @@ int     line_len(char *stash)
     return (i);
 }
 
+/* Concatenate two string by calculating their lengths and allocating the needed amount to put them together */
 char    *my_strcat(char *str1, char *str2)
 {
     char    *new;
@@ -73,6 +77,7 @@ char    *my_strcat(char *str1, char *str2)
     return (new);
 }
 
+/* Duplicate a string (libft func) */
 char	*ft_strdup(const char *src)
 {
 	char	*string;
@@ -86,6 +91,7 @@ char	*ft_strdup(const char *src)
 	return (string);
 }
 
+/* Extract the line to be returned from the stash */
 char    *extract_line(char *stash)
 {
     int i;
@@ -103,6 +109,7 @@ char    *extract_line(char *stash)
     return (line);
 }
 
+/* Makes stash by collecting nodes contents and putting then together in  a single (char *) */
 char    *make_stash(t_gnl *head)
 {
     char *stash;
@@ -124,6 +131,7 @@ char    *make_stash(t_gnl *head)
     return (stash);
 }
 
+/* Clears the stash from the outputed line and the translates the next line to the beginning of the stash */
 char    *ft_broomstick(char *stash)
 {
     int i;
