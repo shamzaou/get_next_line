@@ -140,7 +140,7 @@ char    *ft_broomstick(char *stash)
     char *new_stash;
 
     i =0;
-    count++;
+    count = 0;
     stash_len = ft_strlen(stash);
     while (stash[--stash_len] != '\n')
         count++;
@@ -150,31 +150,23 @@ char    *ft_broomstick(char *stash)
     return (new_stash);
 }
 
-int main()
+/* Scans for New Line character */
+int     nl_found(char *str)
 {
-    char str[] = "hELhLO\nall.";
-    //char *test = extract_line(str);
-    char *test2;
+    int i;
 
-    test2 = ft_broomstick(str);
-    printf("%s\n", test2);
-
-    /*t_gnl *node1 = (t_gnl *)malloc(sizeof(t_gnl));
-    t_gnl *node2 = (t_gnl *)malloc(sizeof(t_gnl));
-    t_gnl *node3 = (t_gnl *)malloc(sizeof(t_gnl));
-    node1->content = "Hello";
-    node2->content = "mon";
-    node3->content = "ami.";
-    node1->next = node2;
-    node2->next = node3;
-    node3->next = NULL;
-
-    test2 = make_stash(node1);
-
-    printf("%s\n", test2);
-    free(test2);
-    free(node1);
-    free(node2);
-    free(node3);*/
-
+    i = 0;
+    if (str)
+    {
+        while (str[i])
+        {
+            if (str[i] == '\n')
+                return (1);
+            i++;
+        }
+    }
+    return (0);
 }
+
+
+
