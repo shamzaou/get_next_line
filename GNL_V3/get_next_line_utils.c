@@ -71,7 +71,7 @@ char    *my_strcat(char *str1, char *str2)
         new[i + j] = str2[j];
         j++;
     }
-    //new[i + j] = '\n';
+    //new[i + j] = '\0';
     /*if (str1 != NULL)
         free(str1);*/
     return (new);
@@ -132,22 +132,48 @@ char    *make_stash(t_gnl *head)
 }
 
 /* Clears the stash from the outputed line and the translates the next line to the beginning of the stash */
-char    *ft_broomstick(char *stash)
+void    ft_broomstick(char **stash)
 {
     int i;
     int stash_len;
     int count;
     char *new_stash;
+    char *dup;
 
+    dup = *stash;
+    printf("broom dup len : : %s\n", dup);
     i =0;
     count = 0;
-    stash_len = ft_strlen(stash);
-    while (stash[--stash_len] != '\n')
+    stash_len = (int)ft_strlen(dup);
+    //printf("broom dup len : :%d\n", stash_len);
+    while (dup[--stash_len] != '\n' && stash_len >= 0)
         count++;
-    new_stash = (char *)malloc(sizeof(char) * count);
-    while (stash[++stash_len])
-        new_stash[i++] = stash[stash_len];
-    return (new_stash);
+    new_stash = (char *)malloc(sizeof(char) * (count + 1));
+    while (dup[++stash_len] )
+        new_stash[i++] = dup[stash_len];
+    
+    new_stash[++i] = '\0';
+    *stash = new_stash;
+    //return (new_stash);
+}
+
+void ft_broomstickv2(char **stash)
+{
+    char *dup;
+    char *tmp;
+    int i;
+    int j;
+    
+    dup = *stash;
+    i = line_len(dup);
+    j = 0;
+    tmp = (char *)malloc((ft_strlen(dup) - i - 1) * sizeof(char));
+    while (dup[i + j])
+    {
+        tmp[j] = dup[i + j];
+        j++;
+    }
+    *stash = tmp;
 }
 
 /* Scans for New Line character */
@@ -170,3 +196,46 @@ int     nl_found(char *str)
 
 
 
+char    *get_next_line(int fd)
+{
+    t_gnl   *head;
+    t_gnl   *node;
+    static char    *stash;
+    //char    *buf;
+    int nbytes = 5;
+    char *line = NULL;
+
+    node = (t_gnl *)malloc(sizeof(t_gnl));
+    head = node;
+    stash = NULL;
+    while (1)
+    {
+        node->content = (char *)malloc(sizeof(char) * (nbytes));
+        node->next = (t_gnl *)malloc(sizeof(t_gnl));
+        read(fd, node->content, nbytes);
+        if (nl_found(node->content))
+        {
+            node->next = NULL;
+            break;
+        }
+        node = node->next;
+    }
+    stash = make_stash(head);
+    line = extract_line(stash);
+    if (stash != NULL)
+        ft_broomstickv2(&stash);
+    return (line);
+}
+
+int main()
+{
+    
+    int fd = open("files/text", 0);
+
+    printf("%s", get_next_line(fd));
+    printf("%s", get_next_line(fd));
+    printf("%s", get_next_line(fd));
+    printf("%s", get_next_line(fd));
+    
+
+}
