@@ -2,9 +2,9 @@
 
 char    *get_next_line(int fd)
 {
+    static char    *stash;
     t_gnl   *head;
     t_gnl   *node;
-    static char    *stash;
     //char    *buf;
     int nbytes = 5;
     char *line = NULL;

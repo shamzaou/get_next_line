@@ -163,17 +163,21 @@ void ft_broomstickv2(char **stash)
     char *tmp;
     int i;
     int j;
-    
+
     dup = *stash;
-    i = line_len(dup);
-    j = 0;
-    tmp = (char *)malloc((ft_strlen(dup) - i - 1) * sizeof(char));
-    while (dup[i + j])
+    if (dup != NULL)
     {
-        tmp[j] = dup[i + j];
-        j++;
+
+        i = line_len(dup);
+        j = 0;
+        tmp = (char *)malloc((ft_strlen(dup) - i - 1) * sizeof(char));
+        while (dup[i + j])
+        {
+            tmp[j] = dup[i + j];
+            j++;
+        }
+        *stash = tmp;
     }
-    *stash = tmp;
 }
 
 /* Scans for New Line character */
@@ -204,7 +208,9 @@ char    *get_next_line(int fd)
     //char    *buf;
     int nbytes = 5;
     char *line = NULL;
+    int readed;
 
+   //readed = 1;
     node = (t_gnl *)malloc(sizeof(t_gnl));
     head = node;
     stash = NULL;
@@ -212,8 +218,8 @@ char    *get_next_line(int fd)
     {
         node->content = (char *)malloc(sizeof(char) * (nbytes));
         node->next = (t_gnl *)malloc(sizeof(t_gnl));
-        read(fd, node->content, nbytes);
-        if (nl_found(node->content))
+        readed = read(fd, node->content, nbytes);
+        if (nl_found(node->content) || readed < nbytes)
         {
             node->next = NULL;
             break;
@@ -236,6 +242,6 @@ int main()
     printf("%s", get_next_line(fd));
     printf("%s", get_next_line(fd));
     printf("%s", get_next_line(fd));
-    
+    printf("%s", get_next_line(fd));
 
 }
